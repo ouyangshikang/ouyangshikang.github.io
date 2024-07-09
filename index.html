@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-166622440-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://frontman.cn/">
+    
+    
+    <title>心猿意码 | 白陀的前端学习分享</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="白陀, 前端开发, 个人博客, web前端, 前端博客, html, css3, js, hexo, nodejs, es6, canvas, vue, react, git, typescript, 前端测试, 性能优化">
+    <meta name="description" content="白陀的前端学习分享">
+<meta name="keywords" content="白陀, 前端开发, 个人博客, web前端, 前端博客, html, css3, js, hexo, nodejs, es6, canvas, vue, react, git, typescript, 前端测试, 性能优化">
+<meta property="og:type" content="website">
+<meta property="og:title" content="心猿意码">
+<meta property="og:url" content="https://frontman.cn/index.html">
+<meta property="og:site_name" content="心猿意码">
+<meta property="og:description" content="白陀的前端学习分享">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="心猿意码">
+<meta name="twitter:description" content="白陀的前端学习分享">
+    
+        <link rel="alternate" type="application/atom+xml" title="心猿意码" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://frontman.cn/opensearch.xml" title="心猿意码">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213721-704e.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">baituo</h5>
+          <a href="mailto:ouyangshikang@gmail.com" title="ouyangshikang@gmail.com" class="mail">ouyangshikang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect active">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ouyangshikang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">心猿意码</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header index-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">心猿意码</h1>
+        <h5 class="subtitle">
+            
+                白陀的前端学习分享
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+<div class="container body-wrap">
+
+    <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-js-precision-es6-number"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-03-01 22:20:35" datetime="2018-03-01T14:20:35.000Z"  itemprop="datePublished">2018-03-01</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/03/01/js-precision-es6-number/">js数值精度问题及es6数值的拓展</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+js的数值精度问题
+在js内部，整数和浮点数采用同样的存储方法(64位双精度浮点数)，所以有66 === 66.00。
+
+在涉及小数的运算时要注意数值精度的问题,举个人尽皆知的栗子🌰120.1 + 0.2 === 0.3 // false0.1 + 0.2  // 0.30000000000000004
+JavaScript采用国际标准 IEEE 754，JavaScript浮点数的...
+    
+
+        <a href="/2018/03/01/js-precision-es6-number/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-git-commit-standards"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-06-06 21:45:18" datetime="2017-06-06T13:45:18.000Z"  itemprop="datePublished">2017-06-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/06/06/git-commit-standards/">git commit 基本规范</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+简单介绍下 git commit 的规范。
+
+我们每次进行 git 提交的时候，git commit 都包括三个部分：
+
+header
+body
+footer
+
+header 是必须的,body 和 footer 经常可以省略
+
+Headerheader 部分就只有一行(不超过 72 个字符), 包括三个字段type(必须)，scope(可选)，subject(必须)
+1&lt;type&...
+    
+
+        <a href="/2017/06/06/git-commit-standards/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-deepCopy"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-05-21 23:12:06" datetime="2017-05-21T15:12:06.000Z"  itemprop="datePublished">2017-05-21</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/05/21/deepCopy/">javascript中的深拷贝和浅拷贝</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        区别浅拷贝
+对于字符串类型，浅拷贝是对值的复制;
+对于对象或数组来说，浅拷贝是对对象地址的复制，并没有开辟新的栈。就是将一个对象的内存地址的“编号”拷贝给另一个对象。只复制一层对象的属性.
+
+深拷贝
+实现原理: 先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据...
+    
+
+        <a href="/2017/05/21/deepCopy/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-about-this"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-05-12 22:49:39" datetime="2017-05-12T14:49:39.000Z"  itemprop="datePublished">2017-05-12</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/05/12/about-this/">搞懂this及相关问题</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        this的使用场合
+全局环境下使用，指的是顶层对象 window
+构造函数中的this，指的是实例对象
+对象的方法 当A对象的方法赋予给另一个B对象，该方法中的this指向就变成B
+
+照常举个栗子:12345678let obj = &#123;    foo() &#123;        console.log(this);    &#125;&#125;let bar = obj.fo...
+    
+
+        <a href="/2017/05/12/about-this/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-learn-prototype"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-05-10 23:26:27" datetime="2017-05-10T15:26:27.000Z"  itemprop="datePublished">2017-05-10</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/05/10/learn-prototype/">原型链的理解</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        先给出个栗子吃12345678function Person(name)&#123;    this.name = name;&#125;Person.prototype.sayName = function()&#123;    console.log('My name is :' + this.name);&#125;var p = new Person("KK")p.sayName()...
+    
+
+        <a href="/2017/05/10/learn-prototype/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+    </ul>
+
+    
+
+</div>
+
+        <footer class="footer">
+    <div class="bottom">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+        <p>
+            <span>
+                baituo &copy;
+                 2017 -  2024
+            </span>
+            <span>
+                
+                相关链接
+                <a href="https://juejin.im/user/58d33427ac502e0058b86301" target="_blank">掘金</a>
+                <a href="https://github.com/ouyangshikang" target="_blank">github</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/&title=心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/&title=心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=心猿意码&url=https://frontman.cn/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABRklEQVR42u3aQZKDMAwEwPz/0+w1VSlgJOPDovaJIgQ3Byx78OcTt+OnfZ/Pr3m4YWG9iHVctt9rzv57Dc37wsKazDp7Q5PjBJf3hYWF1WP1SjsWFtY6KynqWFhYVVbvdvkKdONcHgvrFay8g/XjLfkWFtY/Zx3FtrKULfSChTWMlb/AeYntlWEsLKykm97i9vr6m6k5FtZI1r4J8fX1p3fAwhrD6k2R87CpF/tiYWFVC231o2Y0uGBhDWPdLCAXJsfJY0RQLKwxrJUBohoV5eexsCazcsRK8JQEWFhYk1nV0OfZgClKmrGwXsd6asNB9cPnza9YWMNYvX1xvQB3y55BLKwXsVYGhd60OwmwsLBmsqobBdbLbTRAYGFhLZfbwv4jLCys1gBRXZSWg2AsrJGsZNJcjY3yh8fCwtpXzpfiWiysKaw/CLUDWicTK7oAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)亲爱的回来啦!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

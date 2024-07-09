@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-166622440-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://frontman.cn/2017/05/12/about-this/">
+    
+    
+    <title>搞懂this及相关问题 | 心猿意码 | 白陀的前端学习分享</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="javascript">
+    <meta name="description" content="this的使用场合 全局环境下使用，指的是顶层对象 window 构造函数中的this，指的是实例对象 对象的方法 当A对象的方法赋予给另一个B对象，该方法中的this指向就变成B  照常举个栗子:12345678let obj = &amp;#123;    foo() &amp;#123;        console.log(this);    &amp;#125;&amp;#125;let bar = obj.foo;o">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搞懂this及相关问题">
+<meta property="og:url" content="https://frontman.cn/2017/05/12/about-this/index.html">
+<meta property="og:site_name" content="心猿意码">
+<meta property="og:description" content="this的使用场合 全局环境下使用，指的是顶层对象 window 构造函数中的this，指的是实例对象 对象的方法 当A对象的方法赋予给另一个B对象，该方法中的this指向就变成B  照常举个栗子:12345678let obj = &amp;#123;    foo() &amp;#123;        console.log(this);    &amp;#125;&amp;#125;let bar = obj.foo;o">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2024-07-09T02:27:50.202Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搞懂this及相关问题">
+<meta name="twitter:description" content="this的使用场合 全局环境下使用，指的是顶层对象 window 构造函数中的this，指的是实例对象 对象的方法 当A对象的方法赋予给另一个B对象，该方法中的this指向就变成B  照常举个栗子:12345678let obj = &amp;#123;    foo() &amp;#123;        console.log(this);    &amp;#125;&amp;#125;let bar = obj.foo;o">
+    
+        <link rel="alternate" type="application/atom+xml" title="心猿意码" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://frontman.cn/opensearch.xml" title="心猿意码">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213721-704e.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">baituo</h5>
+          <a href="mailto:ouyangshikang@gmail.com" title="ouyangshikang@gmail.com" class="mail">ouyangshikang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ouyangshikang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">搞懂this及相关问题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">搞懂this及相关问题</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-12T14:49:39.000Z" itemprop="datePublished" class="page-time">
+  2017-05-12
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#this的使用场合"><span class="post-toc-number">1.</span> <span class="post-toc-text">this的使用场合</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#照常举个栗子"><span class="post-toc-number">2.</span> <span class="post-toc-text">照常举个栗子:</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#绑定this的方法-call-apply-bind的区别"><span class="post-toc-number">3.</span> <span class="post-toc-text">绑定this的方法(call,apply,bind的区别)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#关于this的题目："><span class="post-toc-number">4.</span> <span class="post-toc-text">关于this的题目：</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-about-this"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">搞懂this及相关问题</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-12 22:49:39" datetime="2017-05-12T14:49:39.000Z"  itemprop="datePublished">2017-05-12</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="this的使用场合"><a href="#this的使用场合" class="headerlink" title="this的使用场合"></a>this的使用场合</h3><ol>
+<li>全局环境下使用，指的是顶层对象 <code>window</code></li>
+<li>构造函数中的this，指的是实例对象</li>
+<li>对象的方法 当A对象的方法赋予给另一个B对象，该方法中的this指向就变成B</li>
+</ol>
+<h3 id="照常举个栗子"><a href="#照常举个栗子" class="headerlink" title="照常举个栗子:"></a>照常举个栗子:</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    foo() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> bar = obj.foo;</span><br><span class="line">obj.foo() <span class="comment">// 打印出的 this 是 obj</span></span><br><span class="line">bar() <span class="comment">// 打印出的 this 是 window</span></span><br></pre></td></tr></table></figure>
+<p>为什么呢？<br>解决这类问题需要理解函数的调用问题，js里有三种函数的调用方式：</p>
+<ul>
+<li>func(a,b);</li>
+<li>obj.child.method(a,b);</li>
+<li>func.call(context,a,b);<br>func.apply(context,[a,b]); //context为函数执行环境的上下文</li>
+</ul>
+<p>但其实前两种都可以转化为第三种(以call的形式)：</p>
+<ul>
+<li>func.call(undefine, a,b);</li>
+<li>obj.child.method.call(obj.child,a,b);</li>
+</ul>
+<p>所以，栗子可以吃了:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obj.foo(); -----&gt;   obj.foo.call(obj);</span><br><span class="line">bar();     -----&gt;  bar.call(<span class="literal">undefined</span>);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>在浏览器中，如果context传入的值为undefined，null, 还有空值 ，那么默认的就是window</p>
+</blockquote>
+<ul>
+<li>当然，如果你想让bar()的context指向obj,那就直接bar.call(obj),指定当前context(函数内部的this)绑定到obj上</li>
+</ul>
+<blockquote>
+<p>总结一句话：函数在哪里被调用，this就指向哪里</p>
+</blockquote>
+<hr>
+<h3 id="绑定this的方法-call-apply-bind的区别"><a href="#绑定this的方法-call-apply-bind的区别" class="headerlink" title="绑定this的方法(call,apply,bind的区别)"></a>绑定this的方法(call,apply,bind的区别)</h3><ol>
+<li>call与apply两者对于参数的接受方式不同,call接受的是参数列表，apply接受的是一个包含多个参数的数组</li>
+</ol>
+<ul>
+<li>apply的语法： <code>fun.apply(thisArg[, argsArray])</code><br>如xxx.apply(undefined, [1,2,3])</li>
+<li>call的语法：<code>fun.call(thisArg[, arg1[, arg2[, ...])</code><br>如xxx.call(undefined, 1,2,3])</li>
+</ul>
+<ol start="2">
+<li><code>bind</code>和call,apply的作用一样，动态指定this,不同在于返回值,bind可以强制指定this到某个对象，还可以绑定原函数的参数,然后返回一个新函数，之后不会修改，即预设了对象的this和参数</li>
+<li>看下面bind的demo<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> counter = &#123;</span><br><span class="line">  count: <span class="number">0</span>,</span><br><span class="line">  inc: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.count++;</span><br><span class="line">  &#125;&#125;;</span><br><span class="line">counter.count <span class="comment">// 0</span></span><br><span class="line">counter.inc()counter.count <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * counter.inc内部的this，默认指向counter对象。</span></span><br><span class="line"><span class="comment"> * 如果将这个方法赋值给另一个变量，就会出错,如下：</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> counter = &#123;</span><br><span class="line">  count: <span class="number">0</span>,</span><br><span class="line">  inc: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.count++;</span><br><span class="line">  &#125;&#125;;</span><br><span class="line"><span class="keyword">var</span> func = counter.inc;</span><br><span class="line">func();</span><br><span class="line">counter.count <span class="comment">// 0</span></span><br><span class="line">count <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 函数func是在全局环境中运行的，这时inc内部的this指向顶层对象window，</span></span><br><span class="line"><span class="comment"> *  所以counter.count是不会变的，反而创建了一个全局变量count。</span></span><br><span class="line"><span class="comment"> *  因为window.count原来等于undefined，进行递增运算后undefined++就等于NaN。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以使用bind方法，将inc内部的this绑定到counter对象</span></span><br><span class="line"><span class="keyword">var</span> func = counter.inc.bind(counter);</span><br><span class="line">func();</span><br><span class="line">counter.count <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>绑定原函数的参数这里不再赘述。</p>
+<hr>
+<h3 id="关于this的题目："><a href="#关于this的题目：" class="headerlink" title="关于this的题目："></a>关于this的题目：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> john = &#123;</span><br><span class="line">     firstName: <span class="string">"John"</span></span><br><span class="line"> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     alert(<span class="keyword">this</span>.firstName + <span class="string">": hi!"</span>)</span><br><span class="line">&#125;;</span><br><span class="line"> john.sayHi = func;</span><br><span class="line"> john.sayHi();  <span class="comment">//john.sayHi()的this指向john因此输出"John:hi!"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);<span class="comment">// this指向document</span></span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);<span class="comment">//this指向window</span></span><br><span class="line">    &#125;, <span class="number">200</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"><span class="comment">//分别输出document和window</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> john = &#123;</span><br><span class="line">  firstName: <span class="string">"John"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  alert( <span class="keyword">this</span>.firstName )</span><br><span class="line">&#125;;</span><br><span class="line">func.call(john);</span><br><span class="line"><span class="comment">//输出John,因为func.call(john)将func的this指向了john对象</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">module</span>= &#123;</span><br><span class="line">  bind: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> _this = <span class="keyword">this</span>   <span class="comment">//将当前this保存</span></span><br><span class="line">    $btn.on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(_this) <span class="comment">//this指向$btn</span></span><br><span class="line">      _this.showMsg();<span class="comment">//$btn没有showMsg()方法</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  showMsg: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'nice'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        原始链接：<a href="/2017/05/12/about-this/" target="_blank" rel="external">https://frontman.cn/2017/05/12/about-this/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://frontman.cn">
+            <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" alt="baituo">
+            baituo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/05/12/about-this/&title=《搞懂this及相关问题》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/05/12/about-this/&title=《搞懂this及相关问题》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/05/12/about-this/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《搞懂this及相关问题》 — 心猿意码&url=https://frontman.cn/2017/05/12/about-this/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/05/12/about-this/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/21/deepCopy/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">javascript中的深拷贝和浅拷贝</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/10/learn-prototype/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">原型链的理解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+    <section class="comments" id="comments">
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+            var id = location.pathname
+            if (location.pathname.length > 50) {
+              id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+            }
+            const gitalk = new Gitalk({
+              clientID: 'b338ec358e7a8190419d',
+              clientSecret: '540d966e19be635634bc4c9118b65d02a642b7fe',
+              repo: 'ouyangshikang.github.io',
+              owner: 'ouyangshikang',
+              admin: ['ouyangshikang'],
+              id: id,      // Ensure uniqueness and length less than 50
+              title: document.title.split('|')[0],
+              distractionFreeMode: false,  // Facebook-like distraction free mode
+              body: location.href
+            })
+            gitalk.render('gitalk-container')
+        </script>
+    </section>
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" data-alipay="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213751-22c1.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="bottom">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+        <p>
+            <span>
+                baituo &copy;
+                 2017 -  2024
+            </span>
+            <span>
+                
+                相关链接
+                <a href="https://juejin.im/user/58d33427ac502e0058b86301" target="_blank">掘金</a>
+                <a href="https://github.com/ouyangshikang" target="_blank">github</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/05/12/about-this/&title=《搞懂this及相关问题》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/05/12/about-this/&title=《搞懂this及相关问题》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/05/12/about-this/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《搞懂this及相关问题》 — 心猿意码&url=https://frontman.cn/2017/05/12/about-this/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/05/12/about-this/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAByklEQVR42u3ay46DMAwF0P7/TzPbboBrO2GKdLKqqghOWFh+5POJ1/G1rv8/Ltf105YtXFzcMXfygrP9+WFyAy4u7vPcs4hxticPTPnnuDbg4uK+hVtNVs6eiYuL+3ZuNTAlCRMuLu5vcnuvz8NZXlwtq9VwcXEH3FWpyeT3lv4uLi5ui3sUV94MnYxbTt+Oi4v7CDcPKHm50guIheEuLi7uZu6xaCUXNfI9NyEMFxd3MzdpefSqkjwUjlIcXFzcbdxkjDoZuybHKDdQcHFxN3OTwqYa7KpJTCFhwsXF3cxNEHkYml+2iGo1XFzcB7kJIi9jqjujw+Pi4j7CzdsT8zFqr1FyU/zg4uJu4PZaovm4dGPxg4uLu41bbVxODlP9NDdvx8XF3cytljFJUyMfwZaTKlxc3H/iFiqnuChKLl5EDVZcXNwHudW0ppce5QlTM5/CxcUdc4/iqqYsycEKpREuLu4j3GqomrdOqt2a5mFwcXHH3Dx4TX73SqNy9MXFxV3KbU5gWkPTBbUaLi7uD3OTNmizMYqLi/sqbn4Na1XL43Tyg4uLu5nba5Lm1ymql7eiISsuLu42bm+M2ntc9WrXqL+Li4vb4f4BLagBL3HowtAAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)亲爱的回来啦!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

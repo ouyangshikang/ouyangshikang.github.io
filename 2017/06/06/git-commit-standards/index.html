@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-166622440-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://frontman.cn/2017/06/06/git-commit-standards/">
+    
+    
+    <title>git commit 基本规范 | 心猿意码 | 白陀的前端学习分享</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="git">
+    <meta name="description" content="简单介绍下 git commit 的规范。  我们每次进行 git 提交的时候，git commit 都包括三个部分：  header body footer  header 是必须的,body 和 footer 经常可以省略  Headerheader 部分就只有一行(不超过 72 个字符), 包括三个字段type(必须)，scope(可选)，subject(必须) 1&amp;lt;type&amp;gt;">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git commit 基本规范">
+<meta property="og:url" content="https://frontman.cn/2017/06/06/git-commit-standards/index.html">
+<meta property="og:site_name" content="心猿意码">
+<meta property="og:description" content="简单介绍下 git commit 的规范。  我们每次进行 git 提交的时候，git commit 都包括三个部分：  header body footer  header 是必须的,body 和 footer 经常可以省略  Headerheader 部分就只有一行(不超过 72 个字符), 包括三个字段type(必须)，scope(可选)，subject(必须) 1&amp;lt;type&amp;gt;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2024-07-09T02:40:40.040Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git commit 基本规范">
+<meta name="twitter:description" content="简单介绍下 git commit 的规范。  我们每次进行 git 提交的时候，git commit 都包括三个部分：  header body footer  header 是必须的,body 和 footer 经常可以省略  Headerheader 部分就只有一行(不超过 72 个字符), 包括三个字段type(必须)，scope(可选)，subject(必须) 1&amp;lt;type&amp;gt;">
+    
+        <link rel="alternate" type="application/atom+xml" title="心猿意码" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://frontman.cn/opensearch.xml" title="心猿意码">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213721-704e.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">baituo</h5>
+          <a href="mailto:ouyangshikang@gmail.com" title="ouyangshikang@gmail.com" class="mail">ouyangshikang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ouyangshikang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">git commit 基本规范</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">git commit 基本规范</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-06T13:45:18.000Z" itemprop="datePublished" class="page-time">
+  2017-06-06
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Header"><span class="post-toc-number">1.</span> <span class="post-toc-text">Header</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-git-commit-standards"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">git commit 基本规范</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-06 21:45:18" datetime="2017-06-06T13:45:18.000Z"  itemprop="datePublished">2017-06-06</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>简单介绍下 git commit 的规范。</p>
+</blockquote>
+<p>我们每次进行 git 提交的时候，git commit 都包括三个部分：</p>
+<ul>
+<li><strong>header</strong></li>
+<li><strong>body</strong></li>
+<li><strong>footer</strong></li>
+</ul>
+<p>header 是必须的,body 和 footer 经常可以省略</p>
+<hr>
+<h4 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h4><p>header 部分就只有一行(<strong><em>不超过 72 个字符</em></strong>), 包括三个字段<code>type</code>(必须)，<code>scope</code>(可选)，<code>subject</code>(必须)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>type</strong>:</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">feat：    增加新功能（feature）</span><br><span class="line">fix：     修补bug</span><br><span class="line">docs：    仅仅修改了文档，比如说README,CHANGELOG等等</span><br><span class="line">style：   修改了空格，格式缩进，样式格式（不改变代码逻辑的变动）</span><br><span class="line">refactor：重构（即不是新增功能，也不是修改bug的代码变动）</span><br><span class="line">test：    增加测试，包括单元测试等</span><br><span class="line">perf：    优化相关，比如提升了性能，体验等</span><br><span class="line">chore：   构建过程或辅助工具的变动</span><br><span class="line">revert：  回滚到上一个版本</span><br><span class="line">build：   Build System | 构建</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>scope</strong>:<br>scope 用作说明 commit 的影响范围。</li>
+<li><strong>subject</strong>:<br>subject 是对 commit 的简短说明。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">以动词开头</span><br><span class="line">第一个字母小写</span><br><span class="line">结尾没有句号</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        原始链接：<a href="/2017/06/06/git-commit-standards/" target="_blank" rel="external">https://frontman.cn/2017/06/06/git-commit-standards/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://frontman.cn">
+            <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" alt="baituo">
+            baituo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/06/06/git-commit-standards/&title=《git commit 基本规范》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/06/06/git-commit-standards/&title=《git commit 基本规范》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/06/06/git-commit-standards/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《git commit 基本规范》 — 心猿意码&url=https://frontman.cn/2017/06/06/git-commit-standards/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/06/06/git-commit-standards/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/03/01/js-precision-es6-number/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">js数值精度问题及es6数值的拓展</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/21/deepCopy/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">javascript中的深拷贝和浅拷贝</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+    <section class="comments" id="comments">
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+            var id = location.pathname
+            if (location.pathname.length > 50) {
+              id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+            }
+            const gitalk = new Gitalk({
+              clientID: 'b338ec358e7a8190419d',
+              clientSecret: '540d966e19be635634bc4c9118b65d02a642b7fe',
+              repo: 'ouyangshikang.github.io',
+              owner: 'ouyangshikang',
+              admin: ['ouyangshikang'],
+              id: id,      // Ensure uniqueness and length less than 50
+              title: document.title.split('|')[0],
+              distractionFreeMode: false,  // Facebook-like distraction free mode
+              body: location.href
+            })
+            gitalk.render('gitalk-container')
+        </script>
+    </section>
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" data-alipay="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213751-22c1.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="bottom">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+        <p>
+            <span>
+                baituo &copy;
+                 2017 -  2024
+            </span>
+            <span>
+                
+                相关链接
+                <a href="https://juejin.im/user/58d33427ac502e0058b86301" target="_blank">掘金</a>
+                <a href="https://github.com/ouyangshikang" target="_blank">github</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/06/06/git-commit-standards/&title=《git commit 基本规范》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/06/06/git-commit-standards/&title=《git commit 基本规范》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/06/06/git-commit-standards/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《git commit 基本规范》 — 心猿意码&url=https://frontman.cn/2017/06/06/git-commit-standards/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/06/06/git-commit-standards/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aQW7DMAwF0dz/0i7QbWNlPqkUsDhaBa5t6TUAQ4l8vfC4fsfdlevPWN/Dr2weMmTIeCzjWo71lOQ9/H7yD7qlypAhYwBjHWR5KFwv9+7N63nJLDJkyJCRLq4TlGXIkCFjF4NcJ2FahgwZMjgj3YLypXeSxa/sxWXIkPFARloY+M/PX6xvyJAh4yGMKxw8OKZJZGtVMmTIOJqRpnTr5fafTRPQYmYqQ4aMBzK2PYBzNp509tkyZMh4OoNPUJuSHPpvOJiTIUPGGEZagCRIHqzTrawMGTJmMtItaG3DSRoveKuZDBky5jBqyyUtESRxrBU132xiZciQcSijdsjFU7r+4V1QfpAhQ8YYRm1B5AoP1nwuGTJkTGBwAAmXJByTZ9PSggwZMiYw0rIiLwN0SpjBRlqGDBkDGLXDr13gfpOHDBky5jDSRI0f+vfTyg/vkSFDxtEMPiVv0uqQeDi+/U5kyJAxhrG3MNDfuKIfABkyZBzKSJsq+AScR4Lvh9llyJAxjMGnTA/deFGTrOFNs4UMGTIOZaDG0PYmNm1RXd+JDt1kyJBxEOMKB2+tSFPDWih/87shQ4aM4xh8tNI10AKbboxlyJAxjdEJsuSvtUaxdA0yZMiYwOgEwbR144tbWRkyZIxn1FoxyGEcTy5vZ5EhQ4YMPH2/LFpLKGXIkDGB0dnE1lq+0hTww/tlyJBxNKN2QNYqJYZnZRsAMmTIeCrjB5BChJqRzXFoAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)亲爱的回来啦!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

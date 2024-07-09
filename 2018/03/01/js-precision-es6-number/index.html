@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-166622440-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://frontman.cn/2018/03/01/js-precision-es6-number/">
+    
+    
+    <title>js数值精度问题及es6数值的拓展 | 心猿意码 | 白陀的前端学习分享</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="javascript">
+    <meta name="description" content="js的数值精度问题 在js内部，整数和浮点数采用同样的存储方法(64位双精度浮点数)，所以有66 === 66.00。  在涉及小数的运算时要注意数值精度的问题,举个人尽皆知的栗子🌰120.1 + 0.2 === 0.3 // false0.1 + 0.2  // 0.30000000000000004 JavaScript采用国际标准 IEEE 754，JavaScript浮点数的64个">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js数值精度问题及es6数值的拓展">
+<meta property="og:url" content="https://frontman.cn/2018/03/01/js-precision-es6-number/index.html">
+<meta property="og:site_name" content="心猿意码">
+<meta property="og:description" content="js的数值精度问题 在js内部，整数和浮点数采用同样的存储方法(64位双精度浮点数)，所以有66 === 66.00。  在涉及小数的运算时要注意数值精度的问题,举个人尽皆知的栗子🌰120.1 + 0.2 === 0.3 // false0.1 + 0.2  // 0.30000000000000004 JavaScript采用国际标准 IEEE 754，JavaScript浮点数的64个">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://st-gdx.dancf.com/gaodingx/73047376/design/20200426-173521-8918.png">
+<meta property="og:image" content="https://st-gdx.dancf.com/gaodingx/73047376/design/20200426-174023-4f23.png">
+<meta property="og:updated_time" content="2024-07-09T02:27:50.202Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js数值精度问题及es6数值的拓展">
+<meta name="twitter:description" content="js的数值精度问题 在js内部，整数和浮点数采用同样的存储方法(64位双精度浮点数)，所以有66 === 66.00。  在涉及小数的运算时要注意数值精度的问题,举个人尽皆知的栗子🌰120.1 + 0.2 === 0.3 // false0.1 + 0.2  // 0.30000000000000004 JavaScript采用国际标准 IEEE 754，JavaScript浮点数的64个">
+<meta name="twitter:image" content="https://st-gdx.dancf.com/gaodingx/73047376/design/20200426-173521-8918.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="心猿意码" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://frontman.cn/opensearch.xml" title="心猿意码">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213721-704e.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">baituo</h5>
+          <a href="mailto:ouyangshikang@gmail.com" title="ouyangshikang@gmail.com" class="mail">ouyangshikang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ouyangshikang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">js数值精度问题及es6数值的拓展</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">js数值精度问题及es6数值的拓展</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-01T14:20:35.000Z" itemprop="datePublished" class="page-time">
+  2018-03-01
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#js的数值精度问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">js的数值精度问题</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ES6中2进制和8进制的表示"><span class="post-toc-number">2.</span> <span class="post-toc-text">ES6中2进制和8进制的表示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Number对象拓展"><span class="post-toc-number">3.</span> <span class="post-toc-text">Number对象拓展</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-js-precision-es6-number"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">js数值精度问题及es6数值的拓展</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-01 22:20:35" datetime="2018-03-01T14:20:35.000Z"  itemprop="datePublished">2018-03-01</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <hr>
+<h3 id="js的数值精度问题"><a href="#js的数值精度问题" class="headerlink" title="js的数值精度问题"></a>js的数值精度问题</h3><blockquote>
+<p>在js内部，整数和浮点数采用同样的存储方法(64位双精度浮点数)，所以有<code>66 === 66.00</code>。</p>
+</blockquote>
+<p>在涉及小数的运算时要注意数值精度的问题,举个人尽皆知的栗子🌰<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.1</span> + <span class="number">0.2</span> === <span class="number">0.3</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">0.1</span> + <span class="number">0.2</span>  <span class="comment">// 0.30000000000000004</span></span><br></pre></td></tr></table></figure></p>
+<p>JavaScript采用国际标准 <em>IEEE 754</em>，JavaScript浮点数的64个二进制位，从最左边开始，是这样组成的:</p>
+<ul>
+<li>第1位：符号位，0表示正数，1表示负数</li>
+<li>第2位到第12位(11)：指数部分</li>
+<li>第13位到第64位(52)：小数部分（即有效数字）</li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://st-gdx.dancf.com/gaodingx/73047376/design/20200426-173521-8918.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><strong><code>符号位</code>决定了一个数的正负，<code>指数部分</code>决定了数值的大小，<code>小数部分</code>决定了数值的精度</strong></li>
+</ul>
+<blockquote>
+<p>国际标准IEEE 754 规定，有效数字第一位默认总是1，不保存在64位浮点数之中。也就是说，有效数字总是<code>1.xx...xx</code>的形式，其中xx..xx的部分保存在64位浮点数之中，最长可能为52位。因此，JavaScript 提供的有效数字最长为<code>53</code>个二进制位。</p>
+</blockquote>
+<p>  所以，一个数在 JavaScript 内部实际的表示形式为:<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://st-gdx.dancf.com/gaodingx/73047376/design/20200426-174023-4f23.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<ul>
+<li><p>精度最多只能到53个二进制位，这意味着，绝对值小于2的53次方的整数，即<strong>-(2^53-1) ~  2^53-1</strong>，都可以精确表示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">53</span>); <span class="comment">// 9007199254740992</span></span><br><span class="line"><span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">53</span>) + <span class="number">1</span>; <span class="comment">//9007199254740992</span></span><br><span class="line"><span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">53</span>) + <span class="number">2</span>;  <span class="comment">// 9007199254740994</span></span><br><span class="line"><span class="number">9007199254740992222</span> <span class="comment">// 9007199254740992000</span></span><br></pre></td></tr></table></figure>
+<p>大于2的53次方后，计算结果就开始混乱了，无法保持精度,并且多出的三个有效位无法保存，变成0。</p>
+</li>
+</ul>
+<hr>
+<h3 id="ES6中2进制和8进制的表示"><a href="#ES6中2进制和8进制的表示" class="headerlink" title="ES6中2进制和8进制的表示"></a>ES6中2进制和8进制的表示</h3><ul>
+<li>二进制数值：前缀<code>0b/0B</code></li>
+<li>八进制数值：前缀<code>0o/0O</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'二进制表示法:'</span>, <span class="number">0b00010</span> === <span class="number">2</span>); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'八进制表示法:'</span>, <span class="number">0o0340</span> === <span class="number">224</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>将各进制转为10进制用Number()/ parseInt()方法,将10进制转化为各进制可以用toString(n)方法</p>
+</blockquote>
+<hr>
+<h3 id="Number对象拓展"><a href="#Number对象拓展" class="headerlink" title="Number对象拓展"></a>Number对象拓展</h3><p>es6在Number对象上，新增了2个方法。</p>
+<ul>
+<li><p><strong>Number.isFinite()</strong>   检查数值是否是有限的，如果不是数值，返回false</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isFinite(<span class="number">15</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isFinite(<span class="literal">true</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isFinite(<span class="number">0.8</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isFinite(<span class="literal">NaN</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isFinite(<span class="string">'string'</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isFinite(<span class="literal">Infinity</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Number.isNaN()</strong>   检测数值是否为NaN， 如果不是数值，也返回false</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isNaN(<span class="number">15</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isNaN(<span class="literal">true</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isNaN(<span class="string">'NaN'</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isNaN(<span class="literal">NaN</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isNaN(<span class="number">0.4</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>它们与传统的全局方法<strong><em>isFinite()</em></strong>和<strong><em>isNaN()</em></strong>的区别在于，传统方法先调用Number()将非数值的值转为数值，再进行判断。而这两个新方法<code>只对数值有效</code>。 先进行是否是数值的判断，是数值再进行具体判断。</p>
+</blockquote>
+<ul>
+<li><p><strong>ES6将全局方法parseInt()和parseFloat()移植到Number对象上，其他都保持不变</strong></p>
+</li>
+<li><p><strong>Number.isInteger()</strong> 判断一个数值是否为整数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isInteger(<span class="number">66</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isInteger(<span class="number">66.0</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isInteger(<span class="number">66.6</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isInteger(<span class="literal">null</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isInteger(<span class="string">'nice'</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Number.EPSILON</strong>  它表示 1 与大于 1 的最小浮点数之间的差即2的-52次方,这是<code>JavaScript能够表示的最小精度</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.EPSILON === <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">-52</span>)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        原始链接：<a href="/2018/03/01/js-precision-es6-number/" target="_blank" rel="external">https://frontman.cn/2018/03/01/js-precision-es6-number/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://frontman.cn">
+            <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" alt="baituo">
+            baituo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2018/03/01/js-precision-es6-number/&title=《js数值精度问题及es6数值的拓展》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2018/03/01/js-precision-es6-number/&title=《js数值精度问题及es6数值的拓展》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2018/03/01/js-precision-es6-number/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《js数值精度问题及es6数值的拓展》 — 心猿意码&url=https://frontman.cn/2018/03/01/js-precision-es6-number/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2018/03/01/js-precision-es6-number/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/06/06/git-commit-standards/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">git commit 基本规范</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+    <section class="comments" id="comments">
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+            var id = location.pathname
+            if (location.pathname.length > 50) {
+              id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+            }
+            const gitalk = new Gitalk({
+              clientID: 'b338ec358e7a8190419d',
+              clientSecret: '540d966e19be635634bc4c9118b65d02a642b7fe',
+              repo: 'ouyangshikang.github.io',
+              owner: 'ouyangshikang',
+              admin: ['ouyangshikang'],
+              id: id,      // Ensure uniqueness and length less than 50
+              title: document.title.split('|')[0],
+              distractionFreeMode: false,  // Facebook-like distraction free mode
+              body: location.href
+            })
+            gitalk.render('gitalk-container')
+        </script>
+    </section>
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" data-alipay="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213751-22c1.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="bottom">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+        <p>
+            <span>
+                baituo &copy;
+                 2017 -  2024
+            </span>
+            <span>
+                
+                相关链接
+                <a href="https://juejin.im/user/58d33427ac502e0058b86301" target="_blank">掘金</a>
+                <a href="https://github.com/ouyangshikang" target="_blank">github</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2018/03/01/js-precision-es6-number/&title=《js数值精度问题及es6数值的拓展》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2018/03/01/js-precision-es6-number/&title=《js数值精度问题及es6数值的拓展》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2018/03/01/js-precision-es6-number/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《js数值精度问题及es6数值的拓展》 — 心猿意码&url=https://frontman.cn/2018/03/01/js-precision-es6-number/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2018/03/01/js-precision-es6-number/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aS46DMBAFwNz/0pn1KMLzupuMhF2sIkIwxcLp3+sVH++L4/Oa5Pr1588733ZgYGA8lvFeHusF8l9VX0H1DhgYGCcwrnawq2t6yPXdkisvz2NgYGAsF16fmQeLGBgYGD3GeqNcg6uvBgMDAyNPYqs1rkky/MVcHAMD44GMvOr+/5+/0t/AwMB4FONdPJL7VEt1vSf5tSIGBsbWjHyDywOyJKHNk9jCKhgYGFsz8qAw32rvHQtLzmBgYOzNyH+cL5wnw7125uX/BgYGxnaM/KZ5cps3FW57QRgYGFsz8rGJe4v7+YhG+bcYGBgHMJJifS+hnbROC9s3BgbGkYxJWDlvBuTPgIGBsSuj2izME93Jll39M8DAwDiNMSmiVVsLE9If0yIYGBjbMXqh2zpZva2/mieuGBgYWzMmC1cTzkkQeXkGAwNja0bydXXwIh/LqDY+R/VCDAyMxzLyLTXfmqsp8WTYAgMD4wRGPioxWXgynLEOJTEwMM5h9La8auBYLbSV01oMDIzDGHlpbFKZ7zUYCuk5BgbGMYxqMJenoIVHTMpzGBgYmzK+V9bPB796ievlWBgGBsZ2jF5prDcMkW+vvbASAwNjb0a1TFbdOqsthGbgiIGBcQDjrrAvH624ba4NAwMDo9W27G2sveEzDAwMjFF5q/jQk+AVAwPjBEa+/VXDuCSU7KXBGBgY5zCaIw6DPkPe4OyV8zAwMDZi/AAyr+Tz2Uas6wAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)亲爱的回来啦!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

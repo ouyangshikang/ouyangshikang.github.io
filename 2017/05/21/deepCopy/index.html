@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-166622440-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://frontman.cn/2017/05/21/deepCopy/">
+    
+    
+    <title>javascript中的深拷贝和浅拷贝 | 心猿意码 | 白陀的前端学习分享</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="javascript">
+    <meta name="description" content="区别浅拷贝 对于字符串类型，浅拷贝是对值的复制; 对于对象或数组来说，浅拷贝是对对象地址的复制，并没有开辟新的栈。就是将一个对象的内存地址的“编号”拷贝给另一个对象。只复制一层对象的属性.  深拷贝 实现原理: 先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型。">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript中的深拷贝和浅拷贝">
+<meta property="og:url" content="https://frontman.cn/2017/05/21/deepCopy/index.html">
+<meta property="og:site_name" content="心猿意码">
+<meta property="og:description" content="区别浅拷贝 对于字符串类型，浅拷贝是对值的复制; 对于对象或数组来说，浅拷贝是对对象地址的复制，并没有开辟新的栈。就是将一个对象的内存地址的“编号”拷贝给另一个对象。只复制一层对象的属性.  深拷贝 实现原理: 先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://st-gdx.dancf.com/gaodingx-dev/73047376/video-cliper/20200426-173241-ba43.png">
+<meta property="og:updated_time" content="2024-07-09T02:27:50.202Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="javascript中的深拷贝和浅拷贝">
+<meta name="twitter:description" content="区别浅拷贝 对于字符串类型，浅拷贝是对值的复制; 对于对象或数组来说，浅拷贝是对对象地址的复制，并没有开辟新的栈。就是将一个对象的内存地址的“编号”拷贝给另一个对象。只复制一层对象的属性.  深拷贝 实现原理: 先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型。">
+<meta name="twitter:image" content="https://st-gdx.dancf.com/gaodingx-dev/73047376/video-cliper/20200426-173241-ba43.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="心猿意码" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://frontman.cn/opensearch.xml" title="心猿意码">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213721-704e.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">baituo</h5>
+          <a href="mailto:ouyangshikang@gmail.com" title="ouyangshikang@gmail.com" class="mail">ouyangshikang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ouyangshikang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">javascript中的深拷贝和浅拷贝</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">javascript中的深拷贝和浅拷贝</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-21T15:12:06.000Z" itemprop="datePublished" class="page-time">
+  2017-05-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#区别"><span class="post-toc-number">1.</span> <span class="post-toc-text">区别</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#浅拷贝"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">浅拷贝</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#深拷贝"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">深拷贝</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实现"><span class="post-toc-number">2.</span> <span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#浅拷贝-1"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">浅拷贝</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#深拷贝-1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">深拷贝</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-deepCopy"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">javascript中的深拷贝和浅拷贝</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-21 23:12:06" datetime="2017-05-21T15:12:06.000Z"  itemprop="datePublished">2017-05-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><ul>
+<li>对于字符串类型，浅拷贝是对值的复制;</li>
+<li>对于对象或数组来说，浅拷贝是对<code>对象地址的复制</code>，并没有开辟新的栈。就是将一个对象的内存地址的“编号”拷贝给另一个对象。<code>只复制一层对象的属性</code>.</li>
+</ul>
+<h4 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h4><ul>
+<li>实现原理: 先新建一个空对象，<code>内存中新开辟一块地址</code>，把被复制对象的<code>所有可枚举的(注意可枚举的对象)属性方法</code>一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型。</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>深拷贝理解两点:1. 新开辟内存地址，2,递归来刨根复制。</p>
+</blockquote>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><h4 id="浅拷贝-1"><a href="#浅拷贝-1" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><p>在Javascript 中，将一个对象赋值给一个变量其实只是将这个对象的引用拷贝了一份<br>假设这么一段代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> man = &#123;</span><br><span class="line">     name: <span class="string">'aepkill'</span>,</span><br><span class="line">     sex: <span class="string">'male'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> superMan = man;</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://st-gdx.dancf.com/gaodingx-dev/73047376/video-cliper/20200426-173241-ba43.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<blockquote>
+<p>并没有创建一个新的对象实体，而是仅仅拷贝了这种引用关系。<br>所以假设执行 man.name = ‘aotuman’ ，那么superMan.name的值也会变成 ‘aotuman’，因为其实他们引用的是同一个对象实体。</p>
+</blockquote>
+<p>很多场景下并不希望出现像上面中那样， 我们希望能使两个变量相互独立，不再引用同一个对象<br>这很容易实现，只需要申明一个新的对象，然后将这个对象的所有字段原封不动拷贝过去即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">     <span class="comment">//创建一个新对象</span></span><br><span class="line">     <span class="keyword">let</span> newObj = &#123;&#125;;</span><br><span class="line">     <span class="comment">//返回keys数组，包含obj所有可枚举的自身属性名</span></span><br><span class="line">     <span class="keyword">let</span> keys = <span class="built_in">Object</span>.keys(obj),key=<span class="literal">null</span>;</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">let</span> i =<span class="number">0</span>;i&lt;keys.length;i++)&#123;</span><br><span class="line">          key = keys[i];</span><br><span class="line">          <span class="comment">//将obj所有属性复制到新对象</span></span><br><span class="line">          newObj[key] = obj[key];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> newObj;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> people = &#123;</span><br><span class="line">     name:<span class="string">'java'</span>,</span><br><span class="line">     age:<span class="number">22</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> hero = copy(people);</span><br><span class="line">people.name = <span class="string">'javascript'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(people.name); <span class="comment">//javascript</span></span><br><span class="line"><span class="built_in">console</span>.log(hero.name); <span class="comment">// java</span></span><br></pre></td></tr></table></figure>
+<p>两个变量已经不在引用同一个对象，二者的修改是相互独立的</p>
+<h4 id="深拷贝-1"><a href="#深拷贝-1" class="headerlink" title="深拷贝"></a>深拷贝</h4><p>上面已经完成了基本的拷贝，但是只拷贝了第一层的关系，如果对象不止一层的话，上面的函数就不适用了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> people = &#123;</span><br><span class="line">     name: <span class="string">'java'</span>,</span><br><span class="line">     age: <span class="number">22</span>,</span><br><span class="line">     concat:&#123;</span><br><span class="line">          tel:<span class="string">'1568552256'</span>,</span><br><span class="line">          qq:<span class="string">'54666651'</span></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> hero = copy(people);</span><br><span class="line">people.concat.tel = <span class="string">'1111111111'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(people.concat.tel); <span class="comment">//1111111111</span></span><br><span class="line"><span class="built_in">console</span>.log(hero.concat.tel); <span class="comment">// 1111111111</span></span><br></pre></td></tr></table></figure>
+<p>因为只拷贝了一层，所以people 与 hero 中的concat 字段还是引用同一个对象，所以当执行 people.concat.tel = ‘1111111111’ 后，hero .concat.tel 也变成了 ‘1111111111 ‘ ，该如何解决这个问题呢？</p>
+<blockquote>
+<p>此时，需要对这个问题进行梳理并抽象：定义一个函数deepCopy，该函数遍历传入的对象，如果该字段的值不是一个对象则可直接赋值给新对象，否则对该字段用函数deepCopy进行递归操作。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepCopy</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">let</span> newObj = &#123;&#125;</span><br><span class="line">     <span class="keyword">let</span> keys = <span class="built_in">Object</span>.keys(obj),</span><br><span class="line">                    key = <span class="literal">null</span>,</span><br><span class="line">                    temp = <span class="literal">null</span>;</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; keys.length; i++) &#123;</span><br><span class="line">          key = keys[i];</span><br><span class="line">          temp = obj[key];</span><br><span class="line">          <span class="comment">// 如果字段的值也是一个对象则递归操作</span></span><br><span class="line">          <span class="keyword">if</span> (temp &amp;&amp; <span class="keyword">typeof</span> temp === <span class="string">'object'</span>) &#123;</span><br><span class="line">               newObj[key] = deepCopy(temp);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="comment">// 否则直接赋值给新对象</span></span><br><span class="line">               newObj[key] = temp;</span><br><span class="line">          &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> newObj;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> people = &#123;</span><br><span class="line">     name: <span class="string">'java'</span>,</span><br><span class="line">     age: <span class="number">22</span>,</span><br><span class="line">     concat: &#123;</span><br><span class="line">          tel: <span class="string">'1568552256'</span>,</span><br><span class="line">          qq: <span class="string">'54666651'</span></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> hero = deepCopy(people);</span><br><span class="line">people.concat.tel = <span class="string">'1111111111'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(people.concat.tel);<span class="comment">//1111111111</span></span><br><span class="line"><span class="built_in">console</span>.log(hero.concat.tel);<span class="comment">// 1568552256</span></span><br></pre></td></tr></table></figure>
+<p>OK,deepCopy 函数可以拷贝任意深度的对象了</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        原始链接：<a href="/2017/05/21/deepCopy/" target="_blank" rel="external">https://frontman.cn/2017/05/21/deepCopy/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://frontman.cn">
+            <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" alt="baituo">
+            baituo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/05/21/deepCopy/&title=《javascript中的深拷贝和浅拷贝》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/05/21/deepCopy/&title=《javascript中的深拷贝和浅拷贝》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/05/21/deepCopy/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《javascript中的深拷贝和浅拷贝》 — 心猿意码&url=https://frontman.cn/2017/05/21/deepCopy/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/05/21/deepCopy/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/06/06/git-commit-standards/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">git commit 基本规范</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/12/about-this/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">搞懂this及相关问题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+    <section class="comments" id="comments">
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+            var id = location.pathname
+            if (location.pathname.length > 50) {
+              id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+            }
+            const gitalk = new Gitalk({
+              clientID: 'b338ec358e7a8190419d',
+              clientSecret: '540d966e19be635634bc4c9118b65d02a642b7fe',
+              repo: 'ouyangshikang.github.io',
+              owner: 'ouyangshikang',
+              admin: ['ouyangshikang'],
+              id: id,      // Ensure uniqueness and length less than 50
+              title: document.title.split('|')[0],
+              distractionFreeMode: false,  // Facebook-like distraction free mode
+              body: location.href
+            })
+            gitalk.render('gitalk-container')
+        </script>
+    </section>
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" data-alipay="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213751-22c1.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="bottom">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+        <p>
+            <span>
+                baituo &copy;
+                 2017 -  2024
+            </span>
+            <span>
+                
+                相关链接
+                <a href="https://juejin.im/user/58d33427ac502e0058b86301" target="_blank">掘金</a>
+                <a href="https://github.com/ouyangshikang" target="_blank">github</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/05/21/deepCopy/&title=《javascript中的深拷贝和浅拷贝》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/05/21/deepCopy/&title=《javascript中的深拷贝和浅拷贝》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/05/21/deepCopy/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《javascript中的深拷贝和浅拷贝》 — 心猿意码&url=https://frontman.cn/2017/05/21/deepCopy/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/05/21/deepCopy/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxUlEQVR42u3awW7CMBAE0P7/T1Opp0pVwkzWcaj0fEIEyAuHlT27X1/xev2s/JO/P5+8s3jh4uKOua/T9Zd79PqckvzmuQEXF3c/97x45YikCJ7T39hwcXE/jJtfbb+Fi4v7f7nJ7fODDS4u7udzk8PP2k3P7Wc1XFzcAbcNTO94fWO+i4uLW3Jf5Zq0TxbcHRcXdws3CS/y6DPZEuWHq8NHxcXF3cLNy9O1uCT/5WvxCi4u7n3cdjxickDKC1wUm+Li4i7ltiNZk4NN2z45PPbg4uLezG1D0nzT04ImjRlcXNy13GtN01Xdm3p0AxcXdyN3MvSQH5byB8bFxX2WO2mUThowyR3flEtcXNwt3Mk2JR/BbB8GFxd3PzcPJtoNTdueiei4uLhbuG1rpM1c20g02mbh4uLezG1HryZHo2t/BC4u7lPca0FGvjGanLdwcXGf4uYrAeUFrm7e4OLibuHORyXaACVPcEf5Li4u7pibFK8FG5SykB0WOFxc3I3cUWBRxqN50Swu4+LiPsRtmyVJebqxkOHi4m7nzlntuAYuLu5+bju1kcej7WjXslgEFxd3wG0D03b8ItkALQ5lcHFxr3O/Aa7FOL9tzEURAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)亲爱的回来啦!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-166622440-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://frontman.cn/2017/05/10/learn-prototype/">
+    
+    
+    <title>原型链的理解 | 心猿意码 | 白陀的前端学习分享</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="javascript">
+    <meta name="description" content="先给出个栗子吃12345678function Person(name)&amp;#123;    this.name = name;&amp;#125;Person.prototype.sayName = function()&amp;#123;    console.log(&apos;My name is :&apos; + this.name);&amp;#125;var p = new Person(&quot;KK&quot;)p.sayName(); 我">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原型链的理解">
+<meta property="og:url" content="https://frontman.cn/2017/05/10/learn-prototype/index.html">
+<meta property="og:site_name" content="心猿意码">
+<meta property="og:description" content="先给出个栗子吃12345678function Person(name)&amp;#123;    this.name = name;&amp;#125;Person.prototype.sayName = function()&amp;#123;    console.log(&apos;My name is :&apos; + this.name);&amp;#125;var p = new Person(&quot;KK&quot;)p.sayName(); 我">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://st-gdx.dancf.com/gaodingx-dev/73047376/video-cliper/20200426-171201-3d06.png">
+<meta property="og:updated_time" content="2024-07-09T02:27:50.202Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原型链的理解">
+<meta name="twitter:description" content="先给出个栗子吃12345678function Person(name)&amp;#123;    this.name = name;&amp;#125;Person.prototype.sayName = function()&amp;#123;    console.log(&apos;My name is :&apos; + this.name);&amp;#125;var p = new Person(&quot;KK&quot;)p.sayName(); 我">
+<meta name="twitter:image" content="https://st-gdx.dancf.com/gaodingx-dev/73047376/video-cliper/20200426-171201-3d06.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="心猿意码" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://frontman.cn/opensearch.xml" title="心猿意码">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213721-704e.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">baituo</h5>
+          <a href="mailto:ouyangshikang@gmail.com" title="ouyangshikang@gmail.com" class="mail">ouyangshikang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ouyangshikang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">原型链的理解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">原型链的理解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-10T15:26:27.000Z" itemprop="datePublished" class="page-time">
+  2017-05-10
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#先给出个栗子吃"><span class="post-toc-number">1.</span> <span class="post-toc-text">先给出个栗子吃</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#我们解释下-Person、p、prototype、proto、constructor之间的关系哦"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">我们解释下 Person、p、prototype、proto、constructor之间的关系哦</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#那么，在这个栗子中-可以得出这么些结论"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">那么，在这个栗子中,可以得出这么些结论:</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#原型链的概念理解："><span class="post-toc-number">2.</span> <span class="post-toc-text">原型链的概念理解：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#再给张图就更完美了："><span class="post-toc-number">2.1.</span> <span class="post-toc-text">再给张图就更完美了：</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#关于原型的其他知识点"><span class="post-toc-number">3.</span> <span class="post-toc-text">关于原型的其他知识点</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#instanceOf"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">instanceOf</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Object-create"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Object.create()</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-learn-prototype"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">原型链的理解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-10 23:26:27" datetime="2017-05-10T15:26:27.000Z"  itemprop="datePublished">2017-05-10</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="先给出个栗子吃"><a href="#先给出个栗子吃" class="headerlink" title="先给出个栗子吃"></a>先给出个栗子吃</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'My name is :'</span> + <span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person(<span class="string">"KK"</span>)</span><br><span class="line">p.sayName();</span><br></pre></td></tr></table></figure>
+<h4 id="我们解释下-Person、p、prototype、proto、constructor之间的关系哦"><a href="#我们解释下-Person、p、prototype、proto、constructor之间的关系哦" class="headerlink" title="我们解释下 Person、p、prototype、proto、constructor之间的关系哦"></a>我们解释下 Person、p、prototype、proto、constructor之间的关系哦</h4><ol>
+<li><code>Person</code>是构造函数，<code>p</code>是<code>Person</code>的一个实例</li>
+<li>所有的对象都有<code>__proto__</code>属性,只有函数有<code>prototype</code></li>
+<li>每个函数都有自己的原形对象 <code>prototype</code>， 而<code>prototype</code>中有<code>__proto__</code>和<code>constructor</code>, <code>constructor</code>顾名思义就是构造函数,<code>__proto__</code>就是是实例的原型链</li>
+<li>在实例中，<code>__proto__</code>可看做是key,<code>prototype</code>可看做是value。xxx.proto === yyy.prototype</li>
+</ol>
+<h4 id="那么，在这个栗子中-可以得出这么些结论"><a href="#那么，在这个栗子中-可以得出这么些结论" class="headerlink" title="那么，在这个栗子中,可以得出这么些结论:"></a>那么，在这个栗子中,可以得出这么些结论:</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Person.prototype.constructor == Person <span class="comment">//true</span></span><br><span class="line">p.__proto__ === Person.prototype <span class="comment">//true</span></span><br><span class="line">Person.prototype.__proto__ === <span class="built_in">Object</span>.prototype <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.constructor == <span class="built_in">Object</span>,</span><br><span class="line"><span class="built_in">Object</span>.prototype.__proto__ == <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<h3 id="原型链的概念理解："><a href="#原型链的概念理解：" class="headerlink" title="原型链的概念理解："></a>原型链的概念理解：</h3><blockquote>
+<p>使用一个构造函数创造一个实例对象，在此对象上调用相应的属性和方法时，JS存在一个搜索机制，首先查找它本身有没有，如果没有，则顺着<code>__ proto</code><strong>这个指针去找它的构造函数的原型上有没有，如果没有，再顺着原型的<code></code></strong> proto__<code>向上去找，也就是说，只要存在</code><strong> proto</strong><code>这个指针，在没有找到对应的属性与方法时，查找不会停下，直到没有</code><strong> proto</strong><code></code>为止，这样的一种形式可行的结构基础就叫 原型链 。</p>
+</blockquote>
+<h4 id="再给张图就更完美了："><a href="#再给张图就更完美了：" class="headerlink" title="再给张图就更完美了："></a>再给张图就更完美了：</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://st-gdx.dancf.com/gaodingx-dev/73047376/video-cliper/20200426-171201-3d06.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h3 id="关于原型的其他知识点"><a href="#关于原型的其他知识点" class="headerlink" title="关于原型的其他知识点"></a>关于原型的其他知识点</h3><h4 id="instanceOf"><a href="#instanceOf" class="headerlink" title="instanceOf"></a>instanceOf</h4><p>作用：用来检测一个对象的类型</p>
+<ul>
+<li><code>instanceof</code>运算符用来测试一个对象在其原型链中是否存在一个构造函数的<code>prototype</code>属性<br><strong>A instanceof B</strong><blockquote>
+<p>表示A的的原型链中是否存在 B.prototype ： 有就return true,反之return false</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Car</span>(<span class="params">make, model, year</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.make = make;</span><br><span class="line">  <span class="keyword">this</span>.model = model;</span><br><span class="line">  <span class="keyword">this</span>.year = year;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> mycar = <span class="keyword">new</span> Car(<span class="string">"Honda"</span>, <span class="string">"Accord"</span>, <span class="number">1998</span>);</span><br><span class="line"><span class="keyword">var</span> a = mycar <span class="keyword">instanceof</span> Car;</span><br><span class="line"><span class="comment">// 返回 true  var b = mycar instanceof Object; // 返回 true</span></span><br><span class="line"><span class="keyword">var</span> simpleStr = <span class="string">"This is a simple string"</span>;</span><br><span class="line"><span class="keyword">var</span> myString  = <span class="keyword">new</span> <span class="built_in">String</span>();</span><br><span class="line">simpleStr <span class="keyword">instanceof</span> <span class="built_in">String</span>;</span><br><span class="line"><span class="comment">// returns false, 检查原型链会找到 undefined，simpleStr不是对象</span></span><br><span class="line">myString  <span class="keyword">instanceof</span> <span class="built_in">String</span>;</span><br><span class="line"><span class="comment">// returns true</span></span><br></pre></td></tr></table></figure>
+<h4 id="Object-create"><a href="#Object-create" class="headerlink" title="Object.create()"></a>Object.create()</h4><ul>
+<li><code>Object.create()</code> 方法使用指定的原型对象和其属性创建了一个新的对象<br>语法：<code>Object.create(proto, [ propertiesObject ])</code><br>// 第一个参数为一个对象，应该是新创建的对象的原型。<br>作用： 创建一个新的对象,第一层原型链指向对应的参数<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;<span class="string">'age'</span>: <span class="number">20</span>&#125;</span><br><span class="line"><span class="keyword">var</span> b = &#123;<span class="string">'name'</span>:<span class="string">'Jack'</span>&#125;</span><br><span class="line">b = <span class="built_in">Object</span>.create(a)</span><br><span class="line">b.__proto__ === a <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        原始链接：<a href="/2017/05/10/learn-prototype/" target="_blank" rel="external">https://frontman.cn/2017/05/10/learn-prototype/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://frontman.cn">
+            <img src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" alt="baituo">
+            baituo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/05/10/learn-prototype/&title=《原型链的理解》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/05/10/learn-prototype/&title=《原型链的理解》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/05/10/learn-prototype/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《原型链的理解》 — 心猿意码&url=https://frontman.cn/2017/05/10/learn-prototype/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/05/10/learn-prototype/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/12/about-this/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">搞懂this及相关问题</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+    <section class="comments" id="comments">
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+            var id = location.pathname
+            if (location.pathname.length > 50) {
+              id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+            }
+            const gitalk = new Gitalk({
+              clientID: 'b338ec358e7a8190419d',
+              clientSecret: '540d966e19be635634bc4c9118b65d02a642b7fe',
+              repo: 'ouyangshikang.github.io',
+              owner: 'ouyangshikang',
+              admin: ['ouyangshikang'],
+              id: id,      // Ensure uniqueness and length less than 50
+              title: document.title.split('|')[0],
+              distractionFreeMode: false,  // Facebook-like distraction free mode
+              body: location.href
+            })
+            gitalk.render('gitalk-container')
+        </script>
+    </section>
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213818-f454.jpg" data-alipay="https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213751-22c1.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="bottom">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+        <p>
+            <span>
+                baituo &copy;
+                 2017 -  2024
+            </span>
+            <span>
+                
+                相关链接
+                <a href="https://juejin.im/user/58d33427ac502e0058b86301" target="_blank">掘金</a>
+                <a href="https://github.com/ouyangshikang" target="_blank">github</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://frontman.cn/2017/05/10/learn-prototype/&title=《原型链的理解》 — 心猿意码&pic=https://st-gdx.dancf.com/gaodingx/193/configs/system/20200512-213635-63f5.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://frontman.cn/2017/05/10/learn-prototype/&title=《原型链的理解》 — 心猿意码&source=白陀的前端学习分享" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://frontman.cn/2017/05/10/learn-prototype/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《原型链的理解》 — 心猿意码&url=https://frontman.cn/2017/05/10/learn-prototype/&via=https://frontman.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://frontman.cn/2017/05/10/learn-prototype/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3awW6EMAxF0fn/n6ZS1UWlKsx9NoxKfFmNWiA5LCw79uuFr+P7+v17dZ3fs3rb36ded1wyZMh4LINv63yx1f2rp9K/rPYmQ4aMOQweZM/v5CGVh2CyogwZMmTwIJgGUM6TIUOGjDTg8pK1liDKkCFDRq2ITTfBA3QtuMuQIWMOo9YY+Mzv2/sbMmTI+PeMI7zIe9ImaGc/P2+QIUPG1gxyrE+WSQvdtKmAwrEMGTI2ZfCSlZeOnSZljSpDhow5jP50aK2F0EkxZciQMY3Bxx1I8cmTPP4Rl2vJkCFja0Z/o+kYWS00k1VkyJAxh0FK2VowvWqAQ4YMGdMYfNO8bZmWuzy5fJPhypAhY1MGGcNKD8uuOqTjb5YhQ8bejFpCVmsA1A79UTIqQ4aMMYz0YXKgzw/RajA0xSZDhoyHM1oPkDGIsFjthGMZMmTsyug3JlFzERzV8dRzWYXLkCFjDKOftJHlyYcLRtNkyJCxNaOTwKUNg3SoIm1typAhY1dGJ+Dy1mP6Tl4ey5AhYw4jRdaGM9JCN2gtyJAhY2sGLxHTYdP0A/WDuwwZMnZlHOFVK0o7A2fovzJkyNiaUSsjr12gNrQqQ4aMaQweZM/TPt5ovCWkypAhYwCjE2RrrYJaE+LN5IgMGTLGM9LUjbwtbSdcEHBlyJAxmMHTwX4jIejHypAhYyNG2gzgC8djE3c0MmXIkPFwRqeA7IdXkmhe9QlkyJDxQMYX+9/RP/jem3kAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)亲爱的回来啦!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
